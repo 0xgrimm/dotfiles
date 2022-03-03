@@ -1,28 +1,32 @@
-;; UI CONFIGURATION 
-(setq inhibit-startup-message t)  ; Don't show the splash screen
-(setq visible-bell t)             ; Flash when the bell rings
+; Basic configuration
+;; Disable unused UI elements
+(menu-bar-mode -1)                
+(tool-bar-mode -1)                
+(scroll-bar-mode -1)              
+(setq inhibit-startup-message t) 
+(setq use-dialog-box nil)         
+(setq visible-bell t)             
 
-(menu-bar-mode -1)    ; Disable off menu bar
-(tool-bar-mode -1)    ; Disable tool bar
-(scroll-bar-mode -1)  ; Disable scroll bar
+;; Set a better appearance
+(load-theme 'modus-vivendi)
 
-(setq use-dialog-box nil) ; Don't pop up UI dialogs when prompting
+;; Remember last steps
+(recentf-mode 1)      
+(save-place-mode 1)
 
-(global-display-line-numbers-mode 1) ; Display line numbers in every buffer
+;; Buffer revert
+(setq global-auto-revert-non-file-buffers t)
+(global-auto-revert-mode 1)                   
 
-;; GENERAL SETTINGS
-(recentf-mode 1)          ; Remember recently edited files. Execute M-x recentf-open-files
+; Keep Emacs clean
+;; File for custom variables
+(setq custom-file (locate-user-emacs-file "custom-vars.el"))
+(load custom-file 'noerror 'nomessage)
 
-(setq history-length 25)  ; Minibuffer history limit
-(savehist-mode 1)         ; Enable history in minibuffer and shell
+;; Disable backups
+(setq make-backup-files nil)
 
-(save-place-mode 1)       ; Remember last location in file
-
-(setq custom-file (locate-user-emacs-file "custom-vars.el")) ; Change the file where emacs will write variables
-(load custom-file 'noerror 'nomessage)                       ; Load the file with the variables without showing error messages
-
-(global-auto-revert-mode 1)                  ; Revert buffers when the underlying file has changed
-(setq global-auto-revert-non-file-buffers t) ; Revert dired and other buffers
-
-;; THEME
-(load-theme 'modus-vivendi) ; Load modus vivendi dark theme
+;; Auto save files
+(make-directory (expand-file-name "tmp/auto-saves/" user-emacs-directory) t)
+(setq auto-save-list-file-prefix (expand-file-name "tmp/auto-saves/sessions/" user-emacs-directory))
+(setq auto-save-file-name-transforms `((".*" ,(expand-file-name "tmp/auto-saves/" user-emacs-directory) t)))
